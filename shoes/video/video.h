@@ -45,6 +45,8 @@ VALUE shoes_video_get_height(VALUE);
 VALUE shoes_video_get_left(VALUE);
 VALUE shoes_video_get_top(VALUE);
 
+// void  shoes_ruby_video_init(void);
+
 //#else
 //#define SHOES_VIDEO 0
 //#endif

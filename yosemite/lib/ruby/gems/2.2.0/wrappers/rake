@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if
+  [[ -s "/nfs/2014/t/tgauvrit/.rvm/gems/ruby-2.2.0@global/environment" ]]
+then
+  source "/nfs/2014/t/tgauvrit/.rvm/gems/ruby-2.2.0@global/environment"
+  exec rake "$@"
+else
+  echo "ERROR: Missing RVM environment file: '/nfs/2014/t/tgauvrit/.rvm/gems/ruby-2.2.0@global/environment'" >&2
+  exit 1
+fi

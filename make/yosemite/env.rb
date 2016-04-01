@@ -47,14 +47,17 @@ else
   # Hack for when pkg-config is not yet installed
   CAIRO_CFLAGS, CAIRO_LIB, PANGO_CFLAGS, PANGO_LIB = "", "", "", ""
 =end
-CAIRO_CFLAGS = "-I#{BREWLOC}/opt/cairo/include/cairo"
-CAIRO_LIB = "-L#{BREWLOC}/opt/cairo/lib"
+CAIRO_CFLAGS = `pkg-config --cflags cairo`.strip
+CAIRO_LIB = `pkg-config --libs cairo`.strip
 PANGO_CFLAGS = `pkg-config --cflags pango`.strip
 PANGO_LIB = `pkg-config --libs pango`.strip
+RSVG_CFLAGS = `pkg-config --cflags librsvg-2.0`.strip
+RSVG_LIB = `pkg-config --libs librsvg-2.0`.strip
+ADDITIONAL_CFLAGS = "-I/nfs/2014/t/tgauvrit/.brew/Cellar/librsvg/2.40.13/include/librsvg-2.0/librsvg -I/nfs/2014/t/tgauvrit/.brew/Cellar/jpeg/8d/include -I/nfs/2014/t/tgauvrit/.brew/Cellar/giflib/4.2.3/include"
 
 png_lib = 'png'
 
-LINUX_CFLAGS = %[-g -Wall  -I#{BREWLOC}/include #{CAIRO_CFLAGS} #{PANGO_CFLAGS} -I#{RbConfig::CONFIG['archdir']}]
+LINUX_CFLAGS = %[-g -Wall  -I#{BREWLOC}/include #{CAIRO_CFLAGS} #{PANGO_CFLAGS} #{ADDITIONAL_CFLAGS} #{RSVG_CFLAGS} -I#{RbConfig::CONFIG['archdir']}]
 if RbConfig::CONFIG['rubyhdrdir']
   LINUX_CFLAGS << " -I#{RbConfig::CONFIG['rubyhdrdir']} -I#{RbConfig::CONFIG['rubyhdrdir']}/#{SHOES_RUBY_ARCH}"
 end
@@ -101,10 +104,11 @@ LINUX_LDFLAGS << " #{OSX_ARCH} -L/usr/local/lib/ "
 
 LINUX_LIBS = LINUX_LIB_NAMES.map { |x| "-l#{x}" }.join(' ')
 
-LINUX_LIBS << " -L#{TGT_DIR} #{CAIRO_LIB} #{PANGO_LIB}"
+LINUX_LIBS << " -L#{TGT_DIR} #{CAIRO_LIB} #{PANGO_LIB} #{RSVG_LIB}"
+LINUX_LIBS << " -L/nfs/2014/t/tgauvrit/.brew/Cellar/giflib/4.2.3/lib -L/nfs/2014/t/tgauvrit/.brew/Cellar/jpeg/8d/lib -L/nfs/2014/t/tgauvrit/.brew/Cellar/pixman/0.34.0/lib"
 
 
 # Additional Libraries
-LINUX_CFLAGS << " -I/usr/local/opt/pixman/include "
-LINUX_LDFLAGS << " -L/usr/local/opt/pixman/lib " 
-LINUX_LIBS << " -L/usr/local/opt/pixman/lib "
+#LINUX_CFLAGS << " -I/usr/local/opt/pixman/include "
+#LINUX_LDFLAGS << " -L/usr/local/opt/pixman/lib " 
+#LINUX_LIBS << " -L/usr/local/opt/pixman/lib "

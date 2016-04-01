@@ -14,6 +14,7 @@
 #include <ruby.h>
 
 #include "shoes/canvas.h"
+#include "shoes/video/video.h"
 #include "shoes/code.h"
 #include "shoes/config.h"
 
